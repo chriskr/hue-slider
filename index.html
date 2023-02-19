@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<title>hue slider</title>
+<link rel="stylesheet" href="./hue-slider.css" />
+<div id="hue-slider-container">
+  <div class="color-example"></div>
+  <div class="slider-row">
+    <button class="decrease">-</button>
+    <div class="range-input-container">
+      <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#f00" />
+            <stop offset="0.17" stop-color="#ff0" />
+            <stop offset="0.33" stop-color="#0f0" />
+            <stop offset="0.50" stop-color="#0ff" />
+            <stop offset="0.67" stop-color="#00f" />
+            <stop offset="0.83" stop-color="#f0f" />
+            <stop offset="1" stop-color="#f00" />
+          </linearGradient>
+        </defs>
+        <rect x="25" rx="25" y="25" width="950" height="50" fill="url(#g1)" />
+      </svg>
+      <input type="range" min="0" max="360" class="hue-slider" />
+    </div>
+    <button class="increase">+</button>
+  </div>
+</div>
+<script>
+  StyleSheetList.prototype.getDeclaration =
+    function () /* selector1, selector2, ... */ {
+      for (var i = 0; i < arguments.length; i++) {
+        var selector = arguments[i];
+        var reSelector = new RegExp(
+          '(?:^|,\\s*)' +
+            selector.replace(/[\[\]\-]/g, function (m) {
+              return '\\' + m;
+            }) +
+            '(?:$|\\s*,)'
+        );
+        for (var j = 0, sheet; (sheet = this[j]); j++) {
+          // does not take into account import rules
+          if (sheet.cssRules && sheet.cssRules.length) {
+            for (
+              var k = 0, rules = sheet.cssRules, rule;
+              (rule = rules[k]);
+              k++
+            ) {
+              if (rule.type == 1 && reSelector.test(rule.selectorText)) {
+                return rule.style;
+              }
+            }
+          }
+        }
+      }
+      return null;
+    };
+
+  window.onload = () => {
+    var hueThumbStyle = document.styleSheets.getDeclaration(
+      '.hue-slider::-moz-range-thumb',
+      '.hue-slider::-webkit-slider-thumb',
+      '.hue-slider::-ms-thumb'
+    );
+    const container = document.querySelector('#hue-slider-container');
+    const slider = container.querySelector('.hue-slider');
+    const colorExample = container.querySelector('.color-example');
+    const increase = container.querySelector('.increase');
+    const decrease = container.querySelector('.decrease');
+    const updateHue = (hue) => {
+      const color = `hsl(${hue}, 100%, 50%)`;
+      colorExample.style.backgroundColor = color;
+      if (hueThumbStyle) {
+        hueThumbStyle.backgroundColor = color;
+      }
+    };
+    decrease.addEventListener('click', () => {
+      const value = Number.parseInt(slider.value) - 1;
+      slider.value = value;
+      updateHue(value);
+    });
+    increase.addEventListener('click', () => {
+      const value = Number.parseInt(slider.value) + 1;
+      slider.value = value;
+      updateHue(value);
+    });
+    slider.addEventListener('input', (event) => {
+      updateHue(Number.parseInt(event.currentTarget.value));
+    });
+    const updateThumbs = function (hue) {};
+  };
+</script>
