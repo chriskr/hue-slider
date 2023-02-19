@@ -89,9 +89,9 @@
       if (hueThumbStyle) {
         hueThumbStyle.backgroundColor = color;
       }
-      //if (iconStyle) {
-      //  iconStyle.fill = color;
-      //}
+      if (iconStyle) {
+        iconStyle.fill = color;
+      }
     };
     decrease.addEventListener('click', () => {
       const value = Number.parseInt(slider.value) - 1;
