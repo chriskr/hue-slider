@@ -4,7 +4,7 @@
 <div id="hue-slider-container">
   <div class="color-example"></div>
   <div class="slider-row">
-    <button class="decrease">-</button>
+    <button class="material-icon decrease"></button>
     <div class="range-input-container">
       <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
         <defs>
@@ -22,7 +22,7 @@
       </svg>
       <input type="range" min="0" max="360" class="hue-slider" />
     </div>
-    <button class="increase">+</button>
+    <button class="material-icon increase"></button>
   </div>
 </div>
 <script>
@@ -87,5 +87,8 @@
       updateHue(Number.parseInt(event.currentTarget.value));
     });
     const updateThumbs = function (hue) {};
+    const startValue = 120;
+    slider.value = startValue;
+    updateHue(startValue);
   };
 </script>
